@@ -24,14 +24,20 @@ class App extends Component {
     
   };
 
+  onFindGameSubmit = () => {
+    console.log('Search for game');
+    this.setState({waiting: true});
+  };
+
+
   render() {
     return (
       <div>
-          {!this.state.inGame ? (
+          {this.state.inGame ? (
           <div>
             <GameGrid layout={this.state.layout}/>
           </div>
-        ) : <Lobby/>}
+        ) : <Lobby onFindGameSubmit={this.onFindGameSubmit} waiting={this.state.waiting}/>}
       </div>
     );
   };
