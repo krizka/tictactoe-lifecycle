@@ -11,7 +11,7 @@ class App extends Component {
   constructor() {
     super();
     this.state = {
-      gameInfo: ['','','','','','','','',''],
+      layout: ['','','','','','','','',''],
       inGame: false,
       myTurn: false,
       returnToLobby: false,
@@ -27,9 +27,9 @@ class App extends Component {
   render() {
     return (
       <div>
-          {this.state.inGame ? (
+          {!this.state.inGame ? (
           <div>
-            <GameGrid/>
+            <GameGrid layout={this.state.layout}/>
           </div>
         ) : <Lobby/>}
       </div>
