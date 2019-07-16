@@ -3,53 +3,58 @@ import './GameGrid.css';
 
 const GameGrid = ( { layout } ) => {
 	return (
-		<div className="square-container">
-			<div className="square tc dib br3 pa3 bw2 shadow-5 white">
-				<div className="content" id={0} key={0}>
-					{layout[0]}
+		<article className="article1 br4 shadow-5 center">
+			<div className="h11">
+				<h1 className="h11 center">Tic Tac Toe</h1>
+			</div>
+			<div className="square-container">
+				<div className="square tc dib br3 pa3 bw2 shadow-5 white">
+					<div className="content" id={0} key={0}>
+						{layout[0]}
+					</div>
+				</div>
+				<div className="square tc dib br3 pa3 bw2 shadow-5 white">
+					<div className="content" id={1} key={1}>
+						{layout[1]}
+					</div>
+				</div>
+				<div className="square tc dib br3 pa3 bw2 shadow-5 white">
+					<div className="content" id={2} key={2}>
+						{layout[2]}
+					</div>
+				</div>
+				<div className="square tc dib br3 pa3 bw2 shadow-5 white">
+					<div className="content" id={3} key={3}>
+						{layout[3]}
+					</div>
+				</div>
+				<div className="square tc dib br3 pa3 bw2 shadow-5 white">
+					<div className="content" id={4} key={4}>
+						{layout[4]}
+					</div>
+				</div>
+				<div className="square tc dib br3 pa3 bw2 shadow-5 white">
+					<div className="content" id={5} key={5}>
+						{layout[5]}
+					</div>
+				</div>
+				<div className="square tc dib br3 pa3 bw2 shadow-5 white">
+					<div className="content" id={6} key={6}>
+						{layout[6]}
+					</div>
+				</div>
+				<div className="square tc dib br3 pa3 bw2 shadow-5 white">
+					<div className="content" id={7} key={7}>
+						{layout[7]}
+					</div>
+				</div>
+				<div className="square tc dib br3 pa3 bw2 shadow-5 white">
+					<div className="content" id={8} key={8}>
+						{layout[8]}
+					</div>
 				</div>
 			</div>
-			<div className="square tc dib br3 pa3 bw2 shadow-5 white">
-				<div className="content" id={1} key={1}>
-					{layout[1]}
-				</div>
-			</div>
-			<div className="square tc dib br3 pa3 bw2 shadow-5 white">
-				<div className="content" id={2} key={2}>
-					{layout[2]}
-				</div>
-			</div>
-			<div className="square tc dib br3 pa3 bw2 shadow-5 white">
-				<div className="content" id={3} key={3}>
-					{layout[3]}
-				</div>
-			</div>
-			<div className="square tc dib br3 pa3 bw2 shadow-5 white">
-				<div className="content" id={4} key={4}>
-					{layout[4]}
-				</div>
-			</div>
-			<div className="square tc dib br3 pa3 bw2 shadow-5 white">
-				<div className="content" id={5} key={5}>
-					{layout[5]}
-				</div>
-			</div>
-			<div className="square tc dib br3 pa3 bw2 shadow-5 white">
-				<div className="content" id={6} key={6}>
-					{layout[6]}
-				</div>
-			</div>
-			<div className="square tc dib br3 pa3 bw2 shadow-5 white">
-				<div className="content" id={7} key={7}>
-					{layout[7]}
-				</div>
-			</div>
-			<div className="square tc dib br3 pa3 bw2 shadow-5 white">
-				<div className="content" id={8} key={8}>
-					{layout[8]}
-				</div>
-			</div>
-		</div>
+		</article>
 	);
 };
 
