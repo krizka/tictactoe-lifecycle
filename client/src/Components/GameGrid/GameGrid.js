@@ -2,13 +2,17 @@ import React from 'react';
 import './GameGrid.css';
 
 
-const GameGrid = ( { layout } ) => {
+const GameGrid = ( { layout, makeMove } ) => {
 
 	const theGrid = number => { 
 	 	if (Math.sqrt(number) % 1 !== 0 || number < 9) throw `Error: parameter number must be a square number larger than or equal to 9`;
 	 	let result = [];
 		for (let i = 0; i < number; i++) {
-			result.push(<div className="square tc dib br3 pa3 bw2 shadow-5 white"><div className="content" id={i} key={i}>{layout[i]}</div></div>);
+			result.push(<div className="square tc dib br3 pa3 bw2 shadow-5 white">
+							<div className="content" id={i} key={i} onClick={makeMove}>
+								{layout[i]}
+							</div>
+						</div>);
 		};
 		return result;
 	};

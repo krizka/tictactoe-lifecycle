@@ -26,7 +26,11 @@ class App extends Component {
 
   onFindGameSubmit = () => {
     console.log('Search for game');
-    this.setState({waiting: true});
+    this.setState({inGame: true});
+  };
+
+  makeMove = (e) => {
+    console.log(e.target.id);
   };
 
 
@@ -35,7 +39,7 @@ class App extends Component {
       <div>
           {this.state.inGame ? (
           <div>
-            <GameGrid layout={this.state.layout}/>
+            <GameGrid layout={this.state.layout} makeMove={this.makeMove}/>
           </div>
         ) : <Lobby onFindGameSubmit={this.onFindGameSubmit} waiting={this.state.waiting}/>}
       </div>
