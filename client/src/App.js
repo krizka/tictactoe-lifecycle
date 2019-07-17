@@ -92,6 +92,7 @@ class App extends Component {
   makeMove = (e) => {
     if (this.state.game.turn) {
       socket.emit('makeMove', e.target.id);
+    };
   };
 
   render() {
