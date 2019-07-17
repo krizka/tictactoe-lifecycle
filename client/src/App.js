@@ -19,20 +19,33 @@ const newGame = () => {
   }
 };
 
-const gameObj = newGame();
+let gameObj = newGame();
 
 class App extends Component {
 
   constructor() {
     super();
-
     this.state = {
       path: 'lobby',
       game: newGame(),
     }
-
     socket = socketIOClient('localhost:4001');
   };
+
+  gameReset = () => {
+    gameObj = newGame();
+    this.setState({game: gameObj});
+    this.setState({path: 'lobby'});
+  }
+  // setGame = (game) => {
+  //   this.setState({game: {
+  //       active: game.active,
+  //       layout: game.layout,
+  //       turn: game.turn,
+  //       character: game.character,
+  //       result: game.result,
+  //   })
+  // };
 
   componentDidMount() {
     document.title = "Tic Tac Toe";
@@ -41,39 +54,31 @@ class App extends Component {
     });
 
     socket.on('foundGame', (data) => {
-      console.log(data);
+      gameObj = this.state.game;
+      gameObj.turn = data.turn;
+      gameObj.character = data.character;
+      this.setState({game: gameObj});
       this.setState({path: 'inGame'});
-      this.setState({game: {
-        active: true,
-        layout: new Array(9).fill(''),
-        turn: data.turn,
-        character: data.character,
-        result: {
-          state: '',
-          pattern: [],
-        }}
-      });
-      console.log(this.state.game);
     });
 
     socket.on('update', (data) => {
-      console.log(data);
-      console.log('data=',data.layout);
+      // console.log(data);
+      // console.log('data=',data.layout);
       if (data.badMove) return;
-      this.setState({game: {
-        active: true,
-        layout: data.layout,
-        turn: data.turn,
-        character: this.state.character,
-        result: {
-          state: '',
-          pattern: [],
-        }}
-      });
+      gameObj = this.state.game;
+      gameObj.layout = data.layout;
+      gameObj.turn = data.turn;
+      this.setState({game: gameObj});
       console.log('update=',this.state.game);
     });
 
     socket.on('gameFinished', (data) => {
+      this.setState({path: 'gameOver'});
+      let gameObj = this.state.game;
+      gameObj.turn = false;
+      gameObj.result.state = data.result;
+      gameObj.result.pattern = Array.from(data.pattern);
+      this.setState({game: gameObj});
     });
 
     socket.on('disconnect', () => {

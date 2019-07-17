@@ -32,7 +32,7 @@ const GameGrid = ( { game, path, makeMove, returnToLobby } ) => {
 				<h1 className="h11 center">Tic Tac Toe</h1>
 			</div>
 			<div className="square-container">
-				{theGrid(9)};
+				{theGrid(9)}
 				{path === 'gameOver' ?
 					<button
 						className='w-100 grow f4 link br2 mv4 pv2 dib white bg-orange'
