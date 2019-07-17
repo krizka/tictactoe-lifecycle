@@ -31,10 +31,9 @@ io.on('connection', socket => {
 
 	socket.on('makeMove', (data) => {
 		console.log(data);
+		gameMod.makeMove(socket, io, data);
 	});	
 });
-
-////
 
 server.listen(port, () => {
 	console.log(`Server started on port ${port}`);

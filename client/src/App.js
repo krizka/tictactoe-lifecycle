@@ -36,11 +36,12 @@ class App extends Component {
 
   componentDidMount() {
     document.title = "Tic Tac Toe";
-    
+
     socket.on('waiting', () => {
     });
 
     socket.on('foundGame', (data) => {
+      console.log(data);
       this.setState({path: 'inGame'});
       this.setState({game: {
         active: true,
@@ -52,9 +53,24 @@ class App extends Component {
           pattern: [],
         }}
       });
+      console.log(this.state.game);
     });
 
     socket.on('update', (data) => {
+      console.log(data);
+      console.log('data=',data.layout);
+      if (data.badMove) return;
+      this.setState({game: {
+        active: true,
+        layout: data.layout,
+        turn: data.turn,
+        character: this.state.character,
+        result: {
+          state: '',
+          pattern: [],
+        }}
+      });
+      console.log('update=',this.state.game);
     });
 
     socket.on('gameFinished', (data) => {
@@ -65,14 +81,22 @@ class App extends Component {
   };
 
   onFindGameSubmit = () => {
-    console.log('hello');
     socket.emit('findGame');
+    this.setState({path: 'waiting'});
+  };
+
+  returnToLobby = () => {
+    this.setState({path: 'lobby'});
   };
 
   makeMove = (e) => {
-    socket.emit('makeMove', e.target.id);
-  };
+    console.log('NOWALALA');
+    if (this.state.game.turn) {
+      console.log('WOWOWOW');
+      socket.emit('makeMove', e.target.id);
+    };
 
+  };
 
   render() {
     let { game, path } = this.state;
@@ -82,7 +106,7 @@ class App extends Component {
               {(path === 'lobby' || path === 'waiting') ? 
                 <Lobby onFindGameSubmit={this.onFindGameSubmit} waiting={waiting}/>
               :
-                <GameGrid layout={game.layout} makeMove={this.makeMove}/> 
+                <GameGrid game={game} path={path} makeMove={this.makeMove} returnToLobby={this.returnToLobby}/> 
               }
             </div>);
   };

@@ -1,3 +1,5 @@
+const winner = require('./gameCode.js');
+
 class game {
 	constructor(player1ID, player2ID, gameLayout) {
 		this.player1 = {ID: player1ID, character: 'o'};
@@ -43,6 +45,46 @@ const deleteGame = (socket, io) => {
 	};
 };
 
+const makeMove = (socket, io, data) => {
+	console.log("LOOOOOK", data);
+	let player = socket.id;
+	let gameID = gameIDs[player];
+	let game = games[gameID];
+	let arr = game.gameLayout;
+	let opponent = getOpponentID(player);
+
+	if (arr[data] !== '') {
+		socket.emit('update', {layout:arr,turn:true,badMove:true});
+		return;
+	};
+
+	arr[data] = getMyCharacter(player);
+	game.moves++;
+
+	io.sockets.connected[opponent].emit('update', {layout:arr, turn:true});
+	socket.emit('update', {layout:arr, turn:false});
+
+	let results = judge(arr);
+
+	let win = (results.result === 'win');
+
+	if (win) {
+		let winningPattern = results.pattern;
+		socket.emit('gameFinished', {result: 'winner', pattern: winningPattern});
+		io.sockets.connected[opponent].emit('gameFinished', {result: 'looser', pattern: winningPattern});
+		delete games[gameID];
+		delete gameIDs[player];
+		delete gameIDs[opponent];
+	} else if (game.moves === 9)
+	{
+		socket.emit('gameFinished', {result: 'draw'});
+		io.sockets.connected[opponent].emit('gameFinished', {result: 'draw'});		
+		delete games[gameID];
+		delete gameIDs[player];
+		delete gameIDs[opponent];
+	}
+};
+
 const findGame = (socket, firstCall) => {
 	let player1 = socket.id;
 	if (firstCall) queuing.push(player1);
@@ -74,5 +116,6 @@ module.exports = {
 	queuing,
 	games,
 	gameIDs,
-	deleteGame
+	deleteGame,
+	makeMove
 };
