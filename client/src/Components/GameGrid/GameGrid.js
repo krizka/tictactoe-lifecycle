@@ -26,6 +26,8 @@ const GameGrid = ( { game, path, makeMove, returnToLobby } ) => {
 		.replace(/\w/, x => x.toUpperCase()) + `!` 
 		: `${game.turn ? `Your` : `Opponent's`} turn`;
 
+	console.log('HI, MY NAME IS GAMEGRID. I THINK GAME.TURN = ', game.turn);
+
 	return (
 		<article className="article1 br4 shadow-5 center">
 			<div className="h11">

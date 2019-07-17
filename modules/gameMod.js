@@ -2,10 +2,9 @@ const winner = require('./gameCode.js');
 
 class game {
 	constructor(player1ID, player2ID, gameLayout) {
-		this.player1 = {ID: player1ID, character: 'o'};
-		this.player2 = {ID: player2ID, character: 'x'};
+		this.player1 = {ID: player1ID, character: 'o', ready: false};
+		this.player2 = {ID: player2ID, character: 'x', ready: false};
 		this.gameLayout = gameLayout;
-		this.turn = player1ID;
 		this.moves = 0;
 	};
 };
@@ -56,7 +55,7 @@ const makeMove = (socket, io, data) => {
 	let arr = game.gameLayout;
 	let opponent = getOpponentID(player);
 
-	if (arr[data] !== '') {
+	if (!game.player1.ready || !game.player2.ready || arr[data] !== '') {
 		socket.emit('update', {layout:arr,turn:true,badMove:true});
 		return;
 	};
@@ -64,8 +63,10 @@ const makeMove = (socket, io, data) => {
 	arr[data] = getMyCharacter(player);
 	game.moves++;
 
-	io.sockets.connected[opponent].emit('update', {layout:arr, turn:true});
-	socket.emit('update', {layout:arr, turn:false});
+	game.turn = opponent;
+
+	io.sockets.connected[opponent].emit('update', {layout:arr, turn:true, test:opponent});
+	socket.emit('update', {layout:arr, turn:false, test:opponent});
 
 	let results = judge(arr);
 
@@ -86,6 +87,7 @@ const makeMove = (socket, io, data) => {
 		delete gameIDs[player];
 		delete gameIDs[opponent];
 	}
+	console.log(games);
 };
 
 const findGame = (socket, firstCall) => {
@@ -114,6 +116,15 @@ const findGame = (socket, firstCall) => {
 	};
 };
 
+const readyPlayer = (player) => {
+	let game = getGame(player);
+	if (player === game.player1.ID) {
+		game.player1.ready = true;
+	} else if (player === game.player2.ID) {
+		game.player2.ready = true;
+	};
+};
+
 module.exports = {
 	findGame,
 	queuing,
@@ -121,5 +132,6 @@ module.exports = {
 	gameIDs,
 	deleteGame,
 	makeMove,
-	removeFromQueue
+	removeFromQueue,
+	readyPlayer
 };
