@@ -18,7 +18,7 @@ const newGame = () => {
     },
   }
 };
-  
+
 class App extends Component {
 
   socket = socketIOClient('localhost:4001');
@@ -40,13 +40,26 @@ class App extends Component {
     }
   };
 
+  componentDidMount() {
+    document.title = "Tic Tac Toe - SF";
+    socket.on('waiting', () => {
+    });
+    socket.on('foundGame', (data) => {;
+    });
+    socket.on('update', (data) => {
+    });
+    socket.on('gameFinished', (data) => {
+    });
+    socket.on('disconnect', () => {
+    });
+  };
+
   onFindGameSubmit = () => {
-    console.log('Search for game');
-    this.setState({path: 'waiting'});
+    socket.emit('findGame');
   };
 
   makeMove = (e) => {
-    console.log(e.target.id);
+    socket.emit('makeMove', e.target.id);
   };
 
 
