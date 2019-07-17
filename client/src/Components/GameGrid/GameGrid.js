@@ -29,7 +29,7 @@ const GameGrid = ( { game, path, makeMove, returnToLobby } ) => {
 	return (
 		<article className="article1 br4 shadow-5 center">
 			<div className="h11">
-				<h1 className="h11 center">Tic Tac Toe</h1>
+				<h1 className="h11 center">{msg}</h1>
 			</div>
 			<div className="square-container">
 				{theGrid(9)}

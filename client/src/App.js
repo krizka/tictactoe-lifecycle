@@ -81,7 +81,12 @@ class App extends Component {
       this.setState({game: gameObj});
     });
 
+    socket.on('serverReset', () => {
+      this.gameReset();
+    })
+
     socket.on('disconnect', () => {
+      this.gameReset();
     });
   };
 
@@ -91,7 +96,7 @@ class App extends Component {
   };
 
   returnToLobby = () => {
-    this.setState({path: 'lobby'});
+    this.gameReset();
   };
 
   makeMove = (e) => {
