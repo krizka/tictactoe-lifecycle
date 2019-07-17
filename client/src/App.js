@@ -4,6 +4,8 @@ import socketIOClient from 'socket.io-client';
 import GameGrid from './Components/GameGrid/GameGrid.js';
 import Lobby from './Components/Lobby/Lobby.js';
 
+let socket;
+
 class App extends Component {
 
   socket = socketIOClient('localhost:4001');
@@ -11,22 +13,23 @@ class App extends Component {
   constructor() {
     super();
     this.state = {
-      layout: ['','','','','','','','',''],
-      inGame: false,
-      myTurn: false,
-      returnToLobby: false,
-      socket: undefined,
-      waiting: false,
-      character: '',
-      winningLayout: [],
-      result: ''
-    };
-    
+      path: 'lobby',
+      game: {
+        active: false,
+        layout: new Array(9).fill(''),
+        turn: false,
+        character: '',
+        result: {
+          state: '',
+          pattern: [],
+        },
+      },
+    }
   };
 
   onFindGameSubmit = () => {
     console.log('Search for game');
-    this.setState({inGame: true});
+    this.setState({path: 'waiting'});
   };
 
   makeMove = (e) => {
@@ -35,15 +38,16 @@ class App extends Component {
 
 
   render() {
-    return (
-      <div>
-          {this.state.inGame ? (
-          <div>
-            <GameGrid layout={this.state.layout} makeMove={this.makeMove}/>
-          </div>
-        ) : <Lobby onFindGameSubmit={this.onFindGameSubmit} waiting={this.state.waiting}/>}
-      </div>
-    );
+    let { game, path } = this.state;
+    const waiting = (path === 'waiting');
+
+    return (<div>
+              {(path === 'lobby' || path === 'waiting') ? 
+                <Lobby onFindGameSubmit={this.onFindGameSubmit} waiting={waiting}/>
+              :
+                <GameGrid layout={game.layout} makeMove={this.makeMove}/> 
+              }
+            </div>);
   };
 
 };
