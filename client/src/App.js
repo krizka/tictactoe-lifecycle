@@ -19,42 +19,53 @@ const newGame = () => {
   }
 };
 
-class App extends Component {
+const gameObj = newGame();
 
-  socket = socketIOClient('localhost:4001');
+class App extends Component {
 
   constructor() {
     super();
+
     this.state = {
       path: 'lobby',
-      game: {
-        active: false,
-        layout: new Array(9).fill(''),
-        turn: false,
-        character: '',
-        result: {
-          state: '',
-          pattern: [],
-        },
-      },
+      game: newGame(),
     }
+
+    socket = socketIOClient('localhost:4001');
   };
 
   componentDidMount() {
-    document.title = "Tic Tac Toe - SF";
+    document.title = "Tic Tac Toe";
+    
     socket.on('waiting', () => {
     });
-    socket.on('foundGame', (data) => {;
+
+    socket.on('foundGame', (data) => {
+      this.setState({path: 'inGame'});
+      this.setState({game: {
+        active: true,
+        layout: new Array(9).fill(''),
+        turn: data.turn,
+        character: data.character,
+        result: {
+          state: '',
+          pattern: [],
+        }}
+      });
     });
+
     socket.on('update', (data) => {
     });
+
     socket.on('gameFinished', (data) => {
     });
+
     socket.on('disconnect', () => {
     });
   };
 
   onFindGameSubmit = () => {
+    console.log('hello');
     socket.emit('findGame');
   };
 

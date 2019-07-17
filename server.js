@@ -2,6 +2,7 @@ const express = require("express");
 const http = require("http");
 const socketIo = require("socket.io");
 const path = require('path')
+const gameMod = require('./modules/gameMod.js');
 
 const app = express();
 const server = http.createServer(app);
@@ -9,16 +10,23 @@ const io = socketIo(server);
 
 const port = process.env.PORT || 4001;
 
+const ticker = () => {
+	console.log('--------------------')
+	console.log('# Games:', Object.keys(gameMod.games).length);
+	console.log('# Connected players: ', Object.keys(io.sockets.sockets).length);
+};
+
 io.on('connection', socket => {
+	console.log(socket.id, ' just connected.');
 	
-	socket.emit('connection', socket);
+	socket.emit('connection');
 
 	socket.on("disconnect", () => {
-		console.log(socket.id, ' disconnected');
+		gameMod.deleteGame(socket, io);
 	});
 
 	socket.on('findGame', () => {
-		console.log('Finding Game');
+		gameMod.findGame(socket, true);
 	});
 
 	socket.on('makeMove', (data) => {
@@ -26,8 +34,11 @@ io.on('connection', socket => {
 	});	
 });
 
+////
+
 server.listen(port, () => {
 	console.log(`Server started on port ${port}`);
+	setInterval(() => ticker(), 3820);
 });
 
 app.get('*', (req, res) => res.send('Hello World!'));
