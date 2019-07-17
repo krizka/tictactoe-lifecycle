@@ -87,7 +87,6 @@ const makeMove = (socket, io, data) => {
 		delete gameIDs[player];
 		delete gameIDs[opponent];
 	}
-	console.log(games);
 };
 
 const findGame = (socket, firstCall) => {

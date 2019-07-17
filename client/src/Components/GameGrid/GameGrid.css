@@ -12,7 +12,6 @@
   box-sizing: border-box;
   background: tomato;
   font-size: 9vw;
-
 }
 
 .square::before {

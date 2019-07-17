@@ -39,7 +39,7 @@ io.on('connection', socket => {
 
 server.listen(port, () => {
 	console.log(`Server started on port ${port}`);
-	setInterval(() => ticker(), 60000);
+	setInterval(() => ticker(), 10000);
 });
 
 app.get('*', (req, res) => res.send('Hello World!'));

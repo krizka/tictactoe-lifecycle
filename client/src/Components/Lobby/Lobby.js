@@ -5,7 +5,7 @@ const Lobby = ( { waiting, onFindGameSubmit } ) => {
 	return (
 		<article className="article2 br3 ba b--black-10 mv4 mw6 shadow-5 center">
 			<main className="pa4 black-80">
-				<div className="test">
+				<div className="center">
 					<h1 className="f1 fw6 ph0 mh0">Lobby</h1>
 					<div className='gameGrid'>
 						{!waiting ? 
