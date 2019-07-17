@@ -80,7 +80,7 @@ const makeMove = (socket, io, data) => {
 		delete gameIDs[opponent];
 	} else if (game.moves === 9)
 	{
-		socket.emit('gameFinished', {result: 'draw'});
+		socket.emit('gameFinished', {result: 'draw', pattern: []});
 		io.sockets.connected[opponent].emit('gameFinished', {result: 'draw'});		
 		delete games[gameID];
 		delete gameIDs[player];
@@ -89,11 +89,6 @@ const makeMove = (socket, io, data) => {
 };
 
 const findGame = (socket, firstCall) => {
-	// if (queuing.indexOf(socket.id) === -1) {
-	// 	console.log('Cannot find', socket.id, 'in queue', queuing);
-	// 	clearInterval(interva);
-	// 	return;
-	// };
 	let player1 = socket.id;
 	if (firstCall) queuing.push(player1);
 	if (queuing.length > 1) {		

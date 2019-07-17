@@ -53,12 +53,9 @@ class App extends Component {
       gameObj.turn = data.turn;
       gameObj.character = data.character;
       this.updateStates(gameObj, 'inGame');
-      // this.setState({game: gameObj});
-      // this.setState({path: 'inGame'});
     });
 
     socket.on('update', (data) => {
-      console.log('update', data);
       if (data.badMove) return;
       gameObj = this.state.game;
       gameObj.layout = data.layout;
@@ -93,11 +90,8 @@ class App extends Component {
   };
 
   makeMove = (e) => {
-    console.log('Square ', e.target.id, ' clicked');
     if (this.state.game.turn) {
-      console.log('Emitting move');
       socket.emit('makeMove', e.target.id);
-    } else {console.log('Not my turn');}
   };
 
   render() {
