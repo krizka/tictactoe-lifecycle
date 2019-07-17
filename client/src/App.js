@@ -6,6 +6,19 @@ import Lobby from './Components/Lobby/Lobby.js';
 
 let socket;
 
+const newGame = () => {
+  return {
+    active: false,
+    layout: new Array(9).fill(''),
+    turn: false,
+    character: '',
+    result: {
+      state: '',
+      pattern: [],
+    },
+  }
+};
+  
 class App extends Component {
 
   socket = socketIOClient('localhost:4001');
