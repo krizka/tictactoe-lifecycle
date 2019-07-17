@@ -34,18 +34,13 @@ class App extends Component {
 
   gameReset = () => {
     gameObj = newGame();
-    this.setState({game: gameObj});
-    this.setState({path: 'lobby'});
-  }
-  // setGame = (game) => {
-  //   this.setState({game: {
-  //       active: game.active,
-  //       layout: game.layout,
-  //       turn: game.turn,
-  //       character: game.character,
-  //       result: game.result,
-  //   })
-  // };
+    this.updateStates(gameObj, 'lobby');
+  };
+
+  updateStates = (game, path) => {
+    if (game) this.setState({game: game});
+    if (path) this.setState({path: path});
+  };
 
   componentDidMount() {
     document.title = "Tic Tac Toe";
@@ -57,28 +52,26 @@ class App extends Component {
       gameObj = this.state.game;
       gameObj.turn = data.turn;
       gameObj.character = data.character;
-      this.setState({game: gameObj});
-      this.setState({path: 'inGame'});
+      this.updateStates(gameObj, 'inGame');
+      // this.setState({game: gameObj});
+      // this.setState({path: 'inGame'});
     });
 
     socket.on('update', (data) => {
-      // console.log(data);
-      // console.log('data=',data.layout);
+      console.log('update', data);
       if (data.badMove) return;
       gameObj = this.state.game;
       gameObj.layout = data.layout;
       gameObj.turn = data.turn;
-      this.setState({game: gameObj});
-      console.log('update=',this.state.game);
+      this.updateStates(gameObj);
     });
 
     socket.on('gameFinished', (data) => {
-      this.setState({path: 'gameOver'});
       let gameObj = this.state.game;
       gameObj.turn = false;
       gameObj.result.state = data.result;
       gameObj.result.pattern = Array.from(data.pattern);
-      this.setState({game: gameObj});
+      this.updateStates(gameObj, 'gameOver');
     });
 
     socket.on('serverReset', () => {
@@ -92,7 +85,7 @@ class App extends Component {
 
   onFindGameSubmit = () => {
     socket.emit('findGame');
-    this.setState({path: 'waiting'});
+    this.updateStates(null, 'waiting');
   };
 
   returnToLobby = () => {
@@ -100,12 +93,11 @@ class App extends Component {
   };
 
   makeMove = (e) => {
-    console.log('NOWALALA');
+    console.log('Square ', e.target.id, ' clicked');
     if (this.state.game.turn) {
-      console.log('WOWOWOW');
+      console.log('Emitting move');
       socket.emit('makeMove', e.target.id);
-    };
-
+    } else {console.log('Not my turn');}
   };
 
   render() {

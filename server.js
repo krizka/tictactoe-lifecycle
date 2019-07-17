@@ -17,12 +17,11 @@ const ticker = () => {
 };
 
 io.on('connection', socket => {
-	console.log(socket.id, ' just connected.');
-	
 	socket.emit('connection');
 
 	socket.on("disconnect", () => {
 		gameMod.deleteGame(socket, io);
+		gameMod.removeFromQueue(socket.id);
 	});
 
 	socket.on('findGame', () => {
@@ -30,7 +29,6 @@ io.on('connection', socket => {
 	});
 
 	socket.on('makeMove', (data) => {
-		console.log(data);
 		gameMod.makeMove(socket, io, data);
 	});	
 });

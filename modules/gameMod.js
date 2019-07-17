@@ -26,6 +26,10 @@ const getOpponentID = (player) => {
 	let game = getGame(player);
 	return game.player1.ID === player ? game.player2.ID : game.player1.ID;
 };
+const removeFromQueue = (playerID) => {
+	queuing = queuing.filter(x => x !== playerID);
+	clearInterval(interva);
+};
 
 const deleteGame = (socket, io) => {
 	let player = socket.id;
@@ -34,7 +38,7 @@ const deleteGame = (socket, io) => {
 	if (game) {
 		let opponent = getOpponentID(player);
 		if (opponent) try {
-			io.sockets.connected[opponent].emit('gameFinished', {result: 'opponent-disconnected'});
+			io.sockets.connected[opponent].emit('gameFinished', {result: 'opponent-disconnected', pattern:[]});
 		} catch (err) {
 			console.log(err);
 		}
@@ -46,7 +50,6 @@ const deleteGame = (socket, io) => {
 };
 
 const makeMove = (socket, io, data) => {
-	console.log("LOOOOOK", data);
 	let player = socket.id;
 	let gameID = gameIDs[player];
 	let game = games[gameID];
@@ -86,6 +89,11 @@ const makeMove = (socket, io, data) => {
 };
 
 const findGame = (socket, firstCall) => {
+	// if (queuing.indexOf(socket.id) === -1) {
+	// 	console.log('Cannot find', socket.id, 'in queue', queuing);
+	// 	clearInterval(interva);
+	// 	return;
+	// };
 	let player1 = socket.id;
 	if (firstCall) queuing.push(player1);
 	if (queuing.length > 1) {		
@@ -117,5 +125,6 @@ module.exports = {
 	games,
 	gameIDs,
 	deleteGame,
-	makeMove
+	makeMove,
+	removeFromQueue
 };
