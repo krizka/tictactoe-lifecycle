@@ -5,8 +5,27 @@
 }
 
 .article2 {
-  width: 50%;
-  height: 50%;
+  width: 61.8%;
+  height: 38.2%;
   margin-left: auto;
   margin-right: auto;
+  background: #EEEEEE;
+}
+
+.button1 {
+  font-size: 0.618rem;
+  padding: 1rem 2.618rem;
+}
+
+.h12 {
+  font-size: 2.618rem;
+  color: #757575;
+  font-style: normal;
+  font-family: "verdana";
+}
+
+.h13 {
+	font-size: 0.686rem;
+	font-style: normal;
+	color: #757575;
 }

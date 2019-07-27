@@ -66,6 +66,7 @@ class App extends Component {
       let gameObj = this.state.game;
       gameObj.turn = false;
       gameObj.result.state = data.result;
+
       gameObj.result.pattern = Array.from(data.pattern);
       this.updateStates(gameObj, 'gameOver');
     });
@@ -79,9 +80,14 @@ class App extends Component {
     });
   };
 
-  onFindGameSubmit = () => {
+  onFindGame = () => {
     socket.emit('findGame');
     this.updateStates(null, 'waiting');
+  };
+
+  onStopFindingGame = () => {
+    socket.emit('scrapThat');
+    this.updateStates(null, 'lobby');
   };
 
   returnToLobby = () => {
@@ -89,6 +95,7 @@ class App extends Component {
   };
 
   makeMove = (e) => {
+    console.log(e.target.id);
     if (this.state.game.turn) {
       socket.emit('makeMove', e.target.id);
     };
@@ -100,7 +107,7 @@ class App extends Component {
 
     return (<div>
               {(path === 'lobby' || path === 'waiting') ? 
-                <Lobby onFindGameSubmit={this.onFindGameSubmit} waiting={waiting}/>
+                <Lobby onFindGameSubmit={waiting?this.onFindGame:this.onStopFindingGame} waiting={waiting}/>
               :
                 <GameGrid game={game} path={path} makeMove={this.makeMove} returnToLobby={this.returnToLobby}/> 
               }

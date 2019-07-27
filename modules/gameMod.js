@@ -56,7 +56,7 @@ const makeMove = (socket, io, data) => {
 	let opponent = getOpponentID(player);
 
 	if (!game.player1.ready || !game.player2.ready || arr[data] !== '') {
-		socket.emit('update', {layout:arr,turn:true,badMove:true});
+		socket.emit('update', {layout:arr, turn:true, badMove:true});
 		return;
 	};
 
@@ -74,15 +74,15 @@ const makeMove = (socket, io, data) => {
 
 	if (win) {
 		let winningPattern = results.pattern;
-		socket.emit('gameFinished', {result: 'winner', pattern: winningPattern});
-		io.sockets.connected[opponent].emit('gameFinished', {result: 'looser', pattern: winningPattern});
+		socket.emit('gameFinished', {result:'winner', pattern:winningPattern});
+		io.sockets.connected[opponent].emit('gameFinished', {result:'looser', pattern:winningPattern});
 		delete games[gameID];
 		delete gameIDs[player];
 		delete gameIDs[opponent];
 	} else if (game.moves === 9)
 	{
 		socket.emit('gameFinished', {result: 'draw', pattern: []});
-		io.sockets.connected[opponent].emit('gameFinished', {result: 'draw'});		
+		io.sockets.connected[opponent].emit('gameFinished', {result:'draw', pattern: []});		
 		delete games[gameID];
 		delete gameIDs[player];
 		delete gameIDs[opponent];

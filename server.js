@@ -33,6 +33,7 @@ io.on('connection', socket => {
 	});
 
 	socket.on('makeMove', (data) => {
+		console.log(data);
 		gameMod.makeMove(socket, io, data);
 	});	
 });
@@ -42,4 +43,10 @@ server.listen(port, () => {
 	setInterval(() => ticker(), 10000);
 });
 
-app.get('*', (req, res) => res.send('Hello World!'));
+app.get('/tictactoe/gameinfo', (req, res) => {
+	let obj = { 
+				GameCount: Object.keys(gameMod.games).length, 
+			  	PlayerCount: Object.keys(io.sockets.sockets).length
+			  };
+	res.json(obj);
+});
