@@ -27,6 +27,7 @@ class App extends Component {
     super();
     this.state = {
       path: 'lobby',
+      searchDots: 0,
       game: newGame(),
     }
     socket = socketIOClient('localhost:4001');
@@ -42,10 +43,18 @@ class App extends Component {
     if (path) this.setState({path: path});
   };
 
+  tick() {
+    let newSearchDots = this.state.searchDots;
+    if (++newSearchDots === 4) newSearchDots = 0;
+    this.setState({searchDots: newSearchDots});
+  }
+
   componentDidMount() {
     document.title = "Tic Tac Toe";
 
     socket.on('foundGame', (data) => {
+      clearInterval(this.timerID);
+      this.setState({searchDots: 0});
       gameObj = this.state.game;
       gameObj.ready = true;
       gameObj.turn = data.turn;
@@ -53,7 +62,9 @@ class App extends Component {
       this.updateStates(gameObj, 'inGame');
       socket.emit('ready', socket.id)
     });
-
+    socket.on('findingGame', () => {
+      clearInterval(this.timerID2);
+    });
     socket.on('update', (data) => {
       if (data.badMove) return;
       gameObj = this.state.game;
@@ -61,7 +72,6 @@ class App extends Component {
       gameObj.turn = (socket.id === data.test);//data.turn;
       this.updateStates(gameObj);
     });
-
     socket.on('gameFinished', (data) => {
       let gameObj = this.state.game;
       gameObj.turn = false;
@@ -70,23 +80,37 @@ class App extends Component {
       gameObj.result.pattern = Array.from(data.pattern);
       this.updateStates(gameObj, 'gameOver');
     });
-
     socket.on('serverReset', () => {
       this.gameReset();
     })
-
     socket.on('disconnect', () => {
       this.gameReset();
     });
   };
+  // checkFindGame() {
+  //   return (this.state.path === 'waiting');
+  // };
 
-  onFindGame = () => {
-    socket.emit('findGame');
-    this.updateStates(null, 'waiting');
+  findGameHandler() {
+    alert("No response from server");
+    socket.emit('cancelFindGame');
+    this.updateStates(null, 'lobby');
+    clearInterval(this.timerID2);
   };
 
-  onStopFindingGame = () => {
-    socket.emit('scrapThat');
+  onFindGame = () => {
+    if (!socket.connected) {
+      alert('Not connected to server')
+    } else {
+      socket.emit('findGame');
+      this.updateStates(null, 'waiting');
+      this.timerID = setInterval(() => this.tick(), 618);
+      this.timerID2 = setInterval(() => this.findGameHandler(), 10000);
+    };
+  };
+
+  onStopFindingGame = () => { //Need to add server side implementation
+    socket.emit('cancelFindGame');
     this.updateStates(null, 'lobby');
   };
 
@@ -95,19 +119,19 @@ class App extends Component {
   };
 
   makeMove = (e) => {
-    console.log(e.target.id);
     if (this.state.game.turn) {
       socket.emit('makeMove', e.target.id);
     };
   };
 
   render() {
+
     let { game, path } = this.state;
     const waiting = (path === 'waiting');
 
-    return (<div>
+    return (<div className="App">
               {(path === 'lobby' || path === 'waiting') ? 
-                <Lobby onFindGameSubmit={waiting?this.onFindGame:this.onStopFindingGame} waiting={waiting}/>
+                <Lobby onFindGameSubmit={waiting?this.onStopFindingGame:this.onFindGame} waiting={waiting} searchDots={this.state.searchDots}/>
               :
                 <GameGrid game={game} path={path} makeMove={this.makeMove} returnToLobby={this.returnToLobby}/> 
               }

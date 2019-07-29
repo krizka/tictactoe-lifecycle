@@ -10,16 +10,18 @@ const GameGrid = ( { game, path, makeMove, returnToLobby } ) => {
 
 	const theGrid = number => { 
 	 	if (Math.sqrt(number) % 1 !== 0 || number < 9) throw `Error: parameter number must be a square number larger than or equal to 9`;
-		let classNameWinning = `square tc dib black`;
-		let classNameNormal = `square tc dib white`;
+		
+		let squareClass, squareContentClass, characterColorClass;
 	 	let result = [];
+
 		for (let i = 0; i < number; i++) {
-			let squareClass = game.result.pattern.indexOf(i) !== -1 ? classNameWinning : classNameNormal;
+			characterColorClass = (game.layout[i] === 'o' ? 'redO' : game.layout[i] === 'x' ? 'blackX' : '');
+			squareClass = 'square' + (game.result.pattern.indexOf(i) !== -1 ? ' ' + 'squareWinner' + characterColorClass : '');
+			squareContentClass =  characterColorClass;
 			result.push(<div className={squareClass} key={i} id={i} onClick={makeMove}>
-								<div className="content">{game.layout[i]}</div>
+							<div className={squareContentClass}>{game.layout[i]}</div>
 						</div>);
 		};
-		console.log(result);
 		return result;
 	};
 

@@ -1,25 +1,25 @@
 import React from 'react';
 import './Lobby.css';
 
-const Lobby = ( { waiting, onFindGameSubmit } ) => {
+const Lobby = ( { waiting, onFindGameSubmit, searchDots } ) => {
 	return (
-		<article className="article2 br3 ba b--black-10 mv4 mw6 shadow-5 center">
-			<main className="pa4 black-80">
-				<div className="center">
-					<h1 className="h12">LOBBY</h1>
+		<article className="article2 center">
+			<div className="">
+					<h1 className="h12">-	 PVP TIC TAC TOE	 -</h1>
+					<h2 className="h12 h14">LOBBY</h2>
 					<div className='gameGrid'>
 						{!waiting ? 
 						<button
-							className='button1'
+							className='button12'
 							disabled={waiting}
 							onClick={onFindGameSubmit}>
 							FIND GAME
 						</button>
 						: 
-						<h1 className="h13">SEARCHING FOR GAME</h1>}
+						<h1 className="h13">SEARCHING FOR GAME{'.'.repeat(searchDots)}</h1>}
 				</div>
-				</div>
-			</main>
+			</div>
+			<div className="pad"></div>
 		</article>
 	);
 };

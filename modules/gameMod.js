@@ -90,6 +90,7 @@ const makeMove = (socket, io, data) => {
 };
 
 const findGame = (socket, firstCall) => {
+	socket.emit('findingGame');
 	let player1 = socket.id;
 	if (firstCall) queuing.push(player1);
 	if (queuing.length > 1) {		
@@ -124,6 +125,13 @@ const readyPlayer = (player) => {
 	};
 };
 
+const stopSearch = (socket, io) => {
+	let player = socket.id;
+	deleteGame(player, io);
+	queueing = queuing.filter(x => x !== player);
+	socket.emit('cancelled');
+};
+
 module.exports = {
 	findGame,
 	queuing,
@@ -132,5 +140,6 @@ module.exports = {
 	deleteGame,
 	makeMove,
 	removeFromQueue,
-	readyPlayer
+	readyPlayer,
+	stopSearch
 };

@@ -1,7 +1,6 @@
 .h11 {
   font-size: 5vmin;
   color: #757575;
-  font-family: "verdana";
 }
 .game-page-container {
   display: grid;
@@ -19,11 +18,10 @@
   border: solid 1px;
   border-color: #757575; 
   color: #757575;
-  padding: 2vmin 6vmin;
   text-align: center;
-  text-decoration: none;
-  display: inline-block;
-  font-size: 2.5vmin;
+  font-size: 2vmin;
+  padding: 2vmin 2vmin;
+  border-radius: 3px;
 }
 .gamegrid-container {
   height: 100%;
@@ -35,14 +33,26 @@
 .square {
   display: flex;
   background: #EEEEEE;
-  border: dashed;
+  border: solid;
   border-color: #757575;
   border-width: 1px;
   border-radius: 5px;
-}
-.square .content {
-  margin-top: 10%;
+  cursor: pointer;
   justify-content: center;
+}
+.squareWinnerredO {
+  border: solid 4px #B71C1C;
+}
+.squareWinnerblackX {
+  border: solid 4px #757575;
+}
+.square .redO {
   font-size: 15vmin;
-  color: #FF9800;
+  color: #B71C1C;
+  padding-top: 3vmin;
+}
+.square .blackX {
+  font-size: 15vmin;
+  color: #616161;
+  padding-top: 3vmin;
 }

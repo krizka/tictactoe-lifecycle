@@ -28,12 +28,15 @@ io.on('connection', socket => {
 		gameMod.findGame(socket, true);
 	});
 
+	socket.on('cancelFindGame', () => {
+		gameMod.stopSearch(socket, io);
+	});
+
 	socket.on('ready', (data) => {
 		gameMod.readyPlayer(socket.id);
 	});
 
 	socket.on('makeMove', (data) => {
-		console.log(data);
 		gameMod.makeMove(socket, io, data);
 	});	
 });
@@ -43,10 +46,13 @@ server.listen(port, () => {
 	setInterval(() => ticker(), 10000);
 });
 
-app.get('/tictactoe/gameinfo', (req, res) => {
-	let obj = { 
-				GameCount: Object.keys(gameMod.games).length, 
-			  	PlayerCount: Object.keys(io.sockets.sockets).length
-			  };
-	res.json(obj);
+app.get('*', (req, res) => {
+	if (req.originalUrl === '/tictactoe/gameinfo') {
+		let obj = { 
+			GameCount: Object.keys(gameMod.games).length, 
+			PlayerCount: Object.keys(io.sockets.sockets).length
+		};
+		res.json(obj);
+	} else
+		res.status(400).send('No Access')
 });
