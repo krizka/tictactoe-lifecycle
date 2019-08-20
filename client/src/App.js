@@ -92,10 +92,12 @@ class App extends Component {
   // };
 
   findGameHandler() {
-    alert("No response from server");
-    socket.emit('cancelFindGame');
-    this.updateStates(null, 'lobby');
-    clearInterval(this.timerID2);
+    if (this.timerID2) {
+      alert("No response from server");
+      socket.emit('cancelFindGame');
+      this.updateStates(null, 'lobby');
+      clearInterval(this.timerID2);
+    };
   };
 
   onFindGame = () => {
