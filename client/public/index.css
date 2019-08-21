@@ -1,0 +1,10 @@
+.root {
+  font-family: 'CoreSansNSCW01-63ExtraBold',sans-serif;
+  min-height: 300px;
+}
+.heading {
+  font-weight: 700;
+}
+.subheading {
+  font-weight: 300;
+}

@@ -1,0 +1,46 @@
+.center {
+  text-align: center;
+}
+
+.article2 {
+  margin-top: 30vh;
+  margin-left: auto;
+  margin-right: auto;
+  background: #EEEEEE;
+  border: solid 2px #757575;
+  border-right: none;
+  border-left: none;
+}
+
+.button12 {
+  margin-top: 1vmin;
+  background-color: #EEEEEE;
+  border: solid 1px;
+  border-color: #757575; 
+  color: #757575;
+  text-align: center;
+  font-size: 0.618rem;
+  padding: 1rem 2.618rem;
+  border-radius: 3px;
+}
+
+.h12 {
+  font-size: 2.618rem;
+  color: #757575;
+  font-style: normal;
+}
+
+.h13 {
+	margin-top: 2%;
+	font-size: 1rem;
+	font-style: normal;
+	color: #757575;
+}
+.pad {
+	padding: 1rem;
+}
+.h14 {
+	font-size: 1.618rem;
+	font-style: normal;
+	color: #757575;
+}

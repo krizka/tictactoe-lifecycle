@@ -1,0 +1,58 @@
+.h11 {
+  font-size: 5vmin;
+  color: #757575;
+}
+.game-page-container {
+  display: grid;
+  grid-template-rows: auto auto auto;
+  justify-items: center;
+}
+.game-page-item {
+  align-content: center;
+  grid-column: span 1;
+  grid-row: span 1;
+}
+.button1 {
+  margin-top: 1vmin;
+  background-color: #EEEEEE;
+  border: solid 1px;
+  border-color: #757575; 
+  color: #757575;
+  text-align: center;
+  font-size: 2vmin;
+  padding: 2vmin 2vmin;
+  border-radius: 3px;
+}
+.gamegrid-container {
+  height: 100%;
+  display: grid;
+  grid-template-rows: 25vmin 25vmin 25vmin;
+  grid-template-columns: 25vmin 25vmin 25vmin;
+  grid-gap: 1vmin 1vmin;
+}
+.square {
+  display: flex;
+  background: #EEEEEE;
+  border: solid;
+  border-color: #757575;
+  border-width: 1px;
+  border-radius: 5px;
+  cursor: pointer;
+  justify-content: center;
+}
+.squareWinnerredO {
+  border: solid 4px #B71C1C;
+}
+.squareWinnerblackX {
+  border: solid 4px #757575;
+}
+.square .redO {
+  font-size: 15vmin;
+  color: #B71C1C;
+  padding-top: 3vmin;
+}
+.square .blackX {
+  font-size: 15vmin;
+  color: #616161;
+  padding-top: 3vmin;
+}
